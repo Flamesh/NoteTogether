@@ -19,7 +19,7 @@ const SafeLayout: React.FC<SafeLayoutProps> = ({
   disableLeft = false,
   disableRight = false,
   additionalPaddingTop = 0,
-  style = {},
+  style = {flex: 1},
   children
 }) => {
   const insets = useSafeAreaInsets();

@@ -1,0 +1,72 @@
+const test = {
+  root: {
+    children: [
+      {
+        children: [
+          {
+            detail: 0,
+            format: 3,
+            mode: "normal",
+            style: "",
+            text: "Hehehe J97 Bo con",
+            type: "text",
+            version: 1,
+          },
+        ],
+        direction: "ltr",
+        format: "",
+        indent: 0,
+        type: "paragraph",
+        version: 1,
+        textFormat: 3,
+        textStyle: "",
+      },
+      {
+        children: [
+          {
+            detail: 0,
+            format: 3,
+            mode: "normal",
+            style: "",
+            text: "Hehehe",
+            type: "text",
+            version: 1,
+          },
+        ],
+        direction: "ltr",
+        format: "",
+        indent: 0,
+        type: "paragraph",
+        version: 1,
+        textFormat: 3,
+        textStyle: "",
+      },
+      {
+        children: [
+          {
+            detail: 0,
+            format: 3,
+            mode: "normal",
+            style: "",
+            text: "Ok ok",
+            type: "text",
+            version: 1,
+          },
+        ],
+        direction: "ltr",
+        format: "",
+        indent: 0,
+        type: "paragraph",
+        version: 1,
+        textFormat: 3,
+        textStyle: "",
+      },
+    ],
+    direction: "ltr",
+    format: "",
+    indent: 0,
+    type: "root",
+    version: 1,
+    textFormat: 3,
+  },
+};
