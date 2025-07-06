@@ -5,21 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import { INSERT_CHECK_LIST_COMMAND, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND } from "@lexical/list";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
 import {
-    $getSelection,
-    $isRangeSelection,
-    CAN_REDO_COMMAND,
-    CAN_UNDO_COMMAND,
-    FORMAT_ELEMENT_COMMAND,
-    FORMAT_TEXT_COMMAND,
-    REDO_COMMAND,
-    SELECTION_CHANGE_COMMAND,
-    UNDO_COMMAND,
+  $getSelection,
+  $isRangeSelection,
+  CAN_REDO_COMMAND,
+  CAN_UNDO_COMMAND,
+  FORMAT_ELEMENT_COMMAND,
+  FORMAT_TEXT_COMMAND,
+  INDENT_CONTENT_COMMAND,
+  OUTDENT_CONTENT_COMMAND,
+  REDO_COMMAND,
+  SELECTION_CHANGE_COMMAND,
+  UNDO_COMMAND,
 } from "lexical";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "../index.css";
+
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const LowPriority = 1;
 
@@ -287,6 +292,92 @@ export default function ToolbarPlugin() {
             d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"
           />
         </svg>
+      </button>
+      <Divider />
+      <button
+        onClick={() => {
+          editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+        }}
+        className="toolbar-item spaced"
+        aria-label="Insert Bullet List"
+        title="Bullet List"
+      >
+        <MaterialCommunityIcons
+          name="format-list-bulleted"
+          size={16}
+          color="currentColor"
+        />
+      </button>
+      <button
+        onClick={() => {
+          editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+        }}
+        className="toolbar-item spaced"
+        aria-label="Insert Numbered List"
+        title="Numbered List"
+      >
+        <MaterialCommunityIcons
+          name="format-list-numbered"
+          size={16}
+          color="currentColor"
+        />
+      </button>
+      <button
+        onClick={() => {
+          editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+        }}
+        className="toolbar-item spaced"
+        aria-label="Insert Checklist"
+        title="Checklist"
+      >
+        <MaterialCommunityIcons
+          name="format-list-checks"
+          size={16}
+          color="currentColor"
+        />
+      </button>
+      <button
+        onClick={() => {
+          editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+        }}
+        className="toolbar-item spaced"
+        aria-label="Remove List"
+        title="Remove List"
+      >
+        <MaterialCommunityIcons
+          name="format-clear"
+          size={16}
+          color="currentColor"
+        />
+      </button>
+      <Divider />
+      <button
+        onClick={() => {
+          editor.dispatchCommand(OUTDENT_CONTENT_COMMAND, undefined);
+        }}
+        className="toolbar-item spaced"
+        aria-label="Outdent"
+        title="Decrease Indent"
+      >
+        <MaterialCommunityIcons
+          name="format-indent-decrease"
+          size={16}
+          color="currentColor"
+        />
+      </button>
+      <button
+        onClick={() => {
+          editor.dispatchCommand(INDENT_CONTENT_COMMAND, undefined);
+        }}
+        className="toolbar-item"
+        aria-label="Indent"
+        title="Increase Indent"
+      >
+        <MaterialCommunityIcons
+          name="format-indent-increase"
+          size={16}
+          color="currentColor"
+        />
       </button>
     </div>
   );

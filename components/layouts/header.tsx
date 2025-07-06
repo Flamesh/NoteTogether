@@ -5,6 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 interface Props {
   title: string;
   onNext?: () => void;
+  nextIcon?: React.ReactNode;
   onPressBack?: () => void;
 }
 
@@ -33,7 +34,11 @@ export const HeaderCustomer = (props: Props) => {
           }}
           style={styles.nextContainer}
         >
-          <Ionicons name="arrow-back" size={30} />
+          {props.nextIcon ? (
+            props.nextIcon
+          ) : (
+            <Ionicons name="arrow-forward" size={30} />
+          )}
         </TouchableOpacity>
       )}
     </View>
@@ -55,7 +60,6 @@ const styles = StyleSheet.create({
   nextContainer: {
     position: "absolute",
     top: 0,
-    right: 0,
-    transform: [{ rotate: "180deg" }],
+    right: 20,
   },
 });

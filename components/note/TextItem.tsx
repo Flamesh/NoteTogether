@@ -6,12 +6,13 @@ import { Text, View } from "react-native";
 const TextItem = (props: INoteContent) => {
   const children = props.children;
   const { format } = props;
-
+  
   return (
     <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: textAlignStyle(format.toString()) }}>
       {children.map((child, index) => {
         const { text, format } = child;
         const textFormat = fromStateToFormat(Number(format));
+        console.log('child', child);
         return (
           <Text
             key={index}

@@ -2,6 +2,7 @@ import Editor from "@/components/editor";
 import { HeaderCustomer } from "@/components/layouts/header";
 import SafeLayout from "@/components/layouts/safeLayout";
 import { addNote } from "@/store/note/slice";
+import { useNavigation } from "expo-router";
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -14,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { INoteContent } from "../../interfaces/note";
 
 export default function TabTwoScreen() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [noteContent, setNoteContent] = useState<INoteContent>();
   const [title, setTitle] = useState<string>("");
@@ -30,12 +32,13 @@ export default function TabTwoScreen() {
     
     dispatch(addNote(newNote));
     setTitle("");
-    setNoteContent(undefined);
+    // setNoteContent(undefined);
+    navigation.goBack()
   };
 
   return (
     <SafeLayout additionalPaddingTop={10} disableLeft disableRight>
-      <HeaderCustomer title="Add note" onPressBack={handleSaveNote} />
+      <HeaderCustomer title="Add note" onNext={handleSaveNote} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
@@ -53,7 +56,9 @@ export default function TabTwoScreen() {
               setEditorState={(state) => {
                 try {
                   if (state && typeof state === "string") {
+                    
                     const parsedState = JSON.parse(state);
+                    console.log("Parsed state:", parsedState);
                     setNoteContent(parsedState.root as INoteContent);
                   }
                 } catch (error) {
@@ -79,6 +84,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
+    marginBottom: 20,
     fontSize: 18,
     backgroundColor: "#fff",
     width: "93%",

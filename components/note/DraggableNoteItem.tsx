@@ -40,7 +40,7 @@ export function DraggableNoteItem({
   };
 
   const longPressGesture = Gesture.LongPress()
-    .minDuration(100)
+    .minDuration(200)
     .onStart(() => {
       runOnJS(handleDragStart)();
       scale.value = withSpring(1.05);
@@ -55,14 +55,14 @@ export function DraggableNoteItem({
     })
     .onEnd((event) => {
       if (isDragging && draggedIndex === index) {
-        const itemHeight = 100; 
+        const itemHeight = 100;
         const moveDistance = Math.round(event.translationY / itemHeight);
         const newIndex = Math.max(0, Math.min(index + moveDistance, 999));
 
         if (Math.abs(moveDistance) > 0) {
           runOnJS(handleDragEnd)(index, newIndex);
         } else {
-          runOnJS(handleDragEnd)(index, index); 
+          runOnJS(handleDragEnd)(index, index);
         }
 
         translateY.value = withSpring(0);
@@ -109,8 +109,10 @@ export function DraggableNoteItem({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 10,
-    marginVertical: 4,
+    marginHorizontal: 20,
+    marginVertical: 0,
+    paddingVertical: 5,
+    
   },
   card: {
     flexDirection: "row",

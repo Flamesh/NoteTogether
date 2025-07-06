@@ -5,7 +5,6 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useDispatch } from "react-redux";
 import TextItem from "./TextItem";
 
-
 interface NoteItemProps {
   note: INote;
 }
@@ -27,6 +26,7 @@ export function NoteItem({ note }: NoteItemProps) {
   const handleDeleteNote = () => {
     dispatch(deleteNote(note.id));
   };
+  console.log(JSON.stringify(note));
   return (
     <View style={style.container}>
       <View>
@@ -38,11 +38,20 @@ export function NoteItem({ note }: NoteItemProps) {
             <TextItem key={index} {...item} />
           ))
         ) : (
-          <Text>No content available</Text>
+          <Text
+            style={{
+              fontStyle: "italic",
+              color: "grey",
+              textAlign: "center",
+              marginTop: 20,
+            }}
+          >
+            No content
+          </Text>
         )}
       </View>
       <View style={style.date}>
-        <Text style={{fontSize: 11, }}>{formatDate(note.updatedAt)}</Text>
+        <Text style={{ fontSize: 11 }}>{formatDate(note.updatedAt)}</Text>
       </View>
       <View style={style.actionContainer}>
         <Pressable onPress={handleDeleteNote}>
@@ -58,8 +67,6 @@ const style = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
     paddingTop: 10,
     paddingBottom: 20,
   },
@@ -83,5 +90,5 @@ const style = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     minHeight: 100,
-  }
+  },
 });

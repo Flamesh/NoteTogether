@@ -11,6 +11,7 @@ export const noteSlice = createSlice({
     initialState: noteInitState,
     reducers: {
         addNote: (state: NoteState, action: CreateNoteAction) => {
+            console.log("Adding note:", action.payload);
             state.notes.push(action.payload);
             
         },

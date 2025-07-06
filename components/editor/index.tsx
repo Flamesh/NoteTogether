@@ -3,12 +3,16 @@
 import "./index.css";
 
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
+import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+
+import { ListItemNode, ListNode } from "@lexical/list";
 
 import ToolbarPlugin from "./plugins/toolbar";
 import Theme from "./theme";
@@ -17,7 +21,7 @@ const placeholder = "Enter your note here...";
 
 const editorConfig = {
   namespace: "NoteEditor",
-  nodes: [],
+  nodes: [ListNode, ListItemNode],
   onError(error: Error) {
     throw error;
   },
@@ -55,6 +59,8 @@ export default function Editor({
               ignoreSelectionChange
             />
             <HistoryPlugin />
+            <ListPlugin />
+            <CheckListPlugin />
             <AutoFocusPlugin />
            
           </div>

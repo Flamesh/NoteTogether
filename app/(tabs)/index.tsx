@@ -10,7 +10,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -39,7 +39,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeLayout additionalPaddingTop={20}>
+    <SafeLayout additionalPaddingTop={20} disableLeft disableRight>
       <View style={{ flex: 1 }}>
         <FlatList
           data={userNotes}
@@ -63,21 +63,21 @@ export default function HomeScreen() {
           )}
           scrollEnabled={!isDragging}
         />
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              // @ts-ignore
-              navigation.navigate("create");
-            }}
-            style={styles.addIconContainer}
-          >
-            <MaterialCommunityIcons
-              name="plus-circle"
-              size={60}
-              color="#007AFF"
-            />
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            // @ts-ignore
+            navigation.navigate("create");
+          }}
+          style={styles.addIconContainer}
+        >
+          <MaterialCommunityIcons
+            name="plus-circle"
+            size={60}
+            color="#007AFF"
+          />
+        </TouchableOpacity>
       </View>
     </SafeLayout>
   );
