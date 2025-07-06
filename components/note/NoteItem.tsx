@@ -11,7 +11,7 @@ interface NoteItemProps {
 
 export function NoteItem({ note }: NoteItemProps) {
   const dispatch = useDispatch();
-  // console.log(JSON.stringify(note));
+
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -26,14 +26,14 @@ export function NoteItem({ note }: NoteItemProps) {
   const handleDeleteNote = () => {
     dispatch(deleteNote(note.id));
   };
-  console.log(JSON.stringify(note));
+  // console.log("NoteItem rendered:", JSON.stringify(note));
   return (
     <View style={style.container}>
       <View>
         <Text style={{ fontSize: 20 }}>{note.title}</Text>
       </View>
       <View style={style.noteContent}>
-        {note.content && note.content.children.length > 0 ? (
+        {note.content && note.content.children && note.content.children.length > 0 ? (
           note.content.children.map((item, index) => (
             <TextItem key={index} {...item} />
           ))

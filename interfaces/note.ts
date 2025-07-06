@@ -8,6 +8,8 @@ export interface INoteContent {
     children: INoteContent[],
     detail: number,
     text: string,
+    listType?: string,
+    value?: number,
 }
 export interface INote {
     id: string;

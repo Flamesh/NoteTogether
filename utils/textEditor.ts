@@ -8,12 +8,12 @@ const states = {
 export const fromStateToFormat = (decimalNumber: number) =>
   Object.fromEntries(Object.entries(states).map(([k, v]) => [k, !!(v & decimalNumber)]));
 
-export const textDecorationLineStyle = (textFormat: string[]): "none" | "underline" | "line-through" | "underline line-through" | undefined => {
+export const textDecorationLineStyle = (IS_STRIKETHROUGH: boolean, IS_UNDERLINE: boolean): "none" | "underline" | "line-through" | "underline line-through" | undefined => {
         let line = "";
-        if (textFormat.includes("IS_UNDERLINE")) {
+        if (IS_UNDERLINE) {
           line += "underline ";
         }
-        if (textFormat.includes("IS_STRIKETHROUGH")) {
+        if (IS_STRIKETHROUGH) {
           line += "line-through ";
         }
         
@@ -34,5 +34,16 @@ export const textAlignStyle = (format: string): "flex-start" | "center" | "flex-
       return "space-between";
     default:
       return undefined;
+  }
+}
+
+export const formatListType = (listType: string | undefined, index: number) => {
+  switch (listType) {
+    case "number":
+      return "" + index + ".";
+    case "bullet":
+      return "•";
+    default:
+      return "•";
   }
 }
