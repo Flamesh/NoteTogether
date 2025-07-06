@@ -24,16 +24,17 @@ export default function TabTwoScreen() {
       id: Date.now().toString(),
       title: title ? title : "",
       content: noteContent,
-      isPinned: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
     
     dispatch(addNote(newNote));
+    setTitle("");
+    setNoteContent(undefined);
   };
 
   return (
-    <SafeLayout additionalPaddingTop={20} disableLeft disableRight>
+    <SafeLayout additionalPaddingTop={10} disableLeft disableRight>
       <HeaderCustomer title="Add note" onPressBack={handleSaveNote} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -49,9 +50,7 @@ export default function TabTwoScreen() {
               placeholder="Enter note title"
             />
             <Editor
-              setPlainText={(text) => console.log("Plain text:", text)}
               setEditorState={(state) => {
-                
                 try {
                   if (state && typeof state === "string") {
                     const parsedState = JSON.parse(state);
@@ -72,7 +71,7 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 10,
   },
   titleInput: {
     height: 50,

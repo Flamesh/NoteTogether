@@ -27,11 +27,3 @@ export interface DeleteNoteAction {
     type: string;
     payload: string; 
 }
-
-export interface UpdatePinNote {
-    type: string;
-    payload: {
-        id: string;
-        isPinned: boolean;
-    };
-}

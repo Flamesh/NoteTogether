@@ -25,18 +25,12 @@ export const noteSlice = createSlice({
             state.notes = state.notes.filter(note => note.id !== action.payload);
             
         },
-        updatePinNote: (state: NoteState, action: { payload: { id: string; isPinned: boolean } }) => {
-            const { id, isPinned } = action.payload;
-            const note = state.notes.find(note => note.id === id);
-            if (note) {
-                note.isPinned = isPinned;
-                note.updatedAt = new Date().toISOString(); // Update the timestamp
-            }
-            
+        updateSortedNotes: (state: NoteState, action: { payload: NoteState['notes'] }) => {
+            state.notes = action.payload;
         }
     },
 })
 
-export const { addNote, updateNote, deleteNote, updatePinNote } = noteSlice.actions;
+export const { addNote, updateNote, deleteNote, updateSortedNotes } = noteSlice.actions;
 
 export default noteSlice.reducer;

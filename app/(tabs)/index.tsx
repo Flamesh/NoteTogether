@@ -1,21 +1,42 @@
 import SafeLayout from "@/components/layouts/safeLayout";
-import { NoteItem } from "@/components/note/NoteItem";
+import { DraggableNoteItem } from "@/components/note/DraggableNoteItem";
 import { selectUserNotes } from "@/store/note/selector";
+import { updateSortedNotes } from "@/store/note/slice";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "expo-router";
+import { useState } from "react";
 import {
   FlatList,
-  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const userNotes = useSelector(selectUserNotes);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (noteId: string) => {
+    const index = userNotes.findIndex((note) => note.id === noteId);
+    setDraggedIndex(index);
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = (fromIndex: number, toIndex: number) => {
+    if (fromIndex !== toIndex && toIndex >= 0 && toIndex < userNotes.length) {
+      const newNotes = [...userNotes];
+      const [movedNote] = newNotes.splice(fromIndex, 1);
+      newNotes.splice(toIndex, 0, movedNote);
+      dispatch(updateSortedNotes(newNotes));
+    }
+    setDraggedIndex(null);
+    setIsDragging(false);
+  };
 
   return (
     <SafeLayout additionalPaddingTop={20}>
@@ -23,10 +44,15 @@ export default function HomeScreen() {
         <FlatList
           data={userNotes}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Pressable onPress={() => console.log("Note pressed:", item)}>
-              <NoteItem note={item} />
-            </Pressable>
+          renderItem={({ item, index }) => (
+            <DraggableNoteItem
+              note={item}
+              index={index}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              isDragging={isDragging}
+              draggedIndex={draggedIndex}
+            />
           )}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
@@ -35,6 +61,7 @@ export default function HomeScreen() {
               </Text>
             </View>
           )}
+          scrollEnabled={!isDragging}
         />
         <View>
           <TouchableOpacity
@@ -81,7 +108,7 @@ const styles = StyleSheet.create({
   addIconContainer: {
     position: "absolute",
     bottom: 20,
-    right: 20,
+    right: 0,
     elevation: 5, // For Android shadow
     shadowColor: "#000", // For iOS shadow
     shadowOffset: { width: 0, height: 2 },

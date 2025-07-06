@@ -13,7 +13,6 @@ export interface INote {
     id: string;
     title: string;
     content?: INoteContent;
-    isPinned: boolean;
     createdAt: string;
     updatedAt: string;
 }
