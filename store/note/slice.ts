@@ -1,10 +1,9 @@
 
-import { MockDataNote } from '@/mock';
 import { createSlice } from '@reduxjs/toolkit';
-import { CreateNoteAction, DeleteNoteAction, NoteState, UpdateNoteAction, UpdateNoteContentAction } from './typings';
+import { CreateNoteAction, DeleteNoteAction, NoteState, UpdateNoteAction } from './typings';
 
 const noteInitState: NoteState = {
-    notes: MockDataNote,
+    notes: [],
 }
 
 export const noteSlice = createSlice({
@@ -19,15 +18,6 @@ export const noteSlice = createSlice({
             const index = state.notes.findIndex(note => note.id === action.payload.id);
             if (index !== -1) {
                 state.notes[index] = action.payload;
-            }
-            
-        },
-        updateNoteContent: (state: NoteState, action: UpdateNoteContentAction) => { 
-            const { id, content } = action.payload;
-            const note = state.notes.find(note => note.id === id);
-            if (note) {
-                note.content = content;
-                note.updatedAt = new Date().toISOString(); // Update the timestamp
             }
             
         },
@@ -47,6 +37,6 @@ export const noteSlice = createSlice({
     },
 })
 
-export const { addNote, updateNote, updateNoteContent, deleteNote, updatePinNote } = noteSlice.actions;
+export const { addNote, updateNote, deleteNote, updatePinNote } = noteSlice.actions;
 
 export default noteSlice.reducer;

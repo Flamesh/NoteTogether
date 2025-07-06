@@ -65,11 +65,14 @@ h1 {
   text-align: left;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  
 }
 
 .editor-inner {
-  background: #fff;
+  background: white;
   position: relative;
+  height: 400px;
+  overflow: auto;
 }
 
 .editor-input {

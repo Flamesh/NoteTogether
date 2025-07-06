@@ -1,33 +1,56 @@
 import SafeLayout from "@/components/layouts/safeLayout";
+import { NoteItem } from "@/components/note/NoteItem";
 import { selectUserNotes } from "@/store/note/selector";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "expo-router";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
   const userNotes = useSelector(selectUserNotes);
-  console.log("User Notes:", userNotes);
+
   return (
     <SafeLayout additionalPaddingTop={20}>
-      <View>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={userNotes}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Pressable onPress={() => console.log("Note pressed:", item)}>
-              <View style={{}}>
-                <Text style={styles.noteItem}>{item.title}</Text>
-                <Text style={styles.noteContent}>{item.content}</Text>
-              </View>
+              <NoteItem note={item} />
             </Pressable>
           )}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
               <Text style={styles.emptyText}>
-                No notes available. Start creating your first note!
+                No notes available. Press the + icon to create one.
               </Text>
             </View>
           )}
         />
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              // @ts-ignore
+              navigation.navigate("create");
+            }}
+            style={styles.addIconContainer}
+          >
+            <MaterialCommunityIcons
+              name="plus-circle"
+              size={60}
+              color="#007AFF"
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeLayout>
   );
@@ -51,7 +74,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: 20,
+    textAlign: "center",
     color: "#999",
+  },
+  addIconContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    elevation: 5, // For Android shadow
+    shadowColor: "#000", // For iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    backgroundColor: "#fff",
+    borderRadius: 30,
   },
 });

@@ -1,6 +1,6 @@
 export interface INoteContent {
     direction: string,
-    format: string,
+    format: number | string,
     indent: number,
     type: string,
     version: number
@@ -12,7 +12,7 @@ export interface INoteContent {
 export interface INote {
     id: string;
     title: string;
-    content: string;
+    content?: INoteContent;
     isPinned: boolean;
     createdAt: string;
     updatedAt: string;
