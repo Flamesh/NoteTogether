@@ -2,6 +2,7 @@ import Editor from "@/components/editor";
 import { HeaderCustomer } from "@/components/layouts/header";
 import SafeLayout from "@/components/layouts/safeLayout";
 import { addNote } from "@/store/note/slice";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -9,16 +10,18 @@ import {
   Platform,
   StyleSheet,
   TextInput,
-  View,
+  View
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { INoteContent } from "../../interfaces/note";
+
 
 export default function TabTwoScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [noteContent, setNoteContent] = useState<INoteContent>();
   const [title, setTitle] = useState<string>("");
+  const [editorKey, setEditorKey] = useState<number>(0); // Key to force editor re-render
 
   const handleSaveNote = () => {
     if (!title && !noteContent) return;
@@ -31,20 +34,24 @@ export default function TabTwoScreen() {
     };
     
     dispatch(addNote(newNote));
+    
+    // Reset all state and force editor to re-mount
     setTitle("");
-    // setNoteContent(undefined);
-    navigation.goBack()
+    setNoteContent(undefined);
+    setEditorKey(prev => prev + 1); // This will force the editor to re-mount
+    
+    navigation.goBack();
   };
 
   return (
     <SafeLayout additionalPaddingTop={10} disableLeft disableRight>
-      <HeaderCustomer title="Add note" onNext={handleSaveNote} />
+      <HeaderCustomer title="Add note" onNext={handleSaveNote} nextIcon={<MaterialCommunityIcons size={30} name="plus-circle" color={'#07a'} />} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
         <View style={styles.container}>
-          <View style={{ height: 400 }}>
+          <View style={{ height: 800 }}>
             <TextInput
               style={styles.titleInput}
               value={title}
@@ -53,6 +60,7 @@ export default function TabTwoScreen() {
               placeholder="Enter note title"
             />
             <Editor
+              key={editorKey} // Force re-mount when key changes
               setEditorState={(state) => {
                 try {
                   if (state && typeof state === "string") {

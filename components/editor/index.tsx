@@ -19,20 +19,24 @@ import Theme from "./theme";
 
 const placeholder = "Enter your note here...";
 
-const editorConfig = {
-  namespace: "NoteEditor",
-  nodes: [ListNode, ListItemNode],
-  onError(error: Error) {
-    throw error;
-  },
-  theme: Theme,
-};
 export default function Editor({
   setEditorState,
+  initialValue,
 }: {
   setEditorState: React.Dispatch<React.SetStateAction<string | null>>;
+  initialValue?: string;
+}) {
   
-  }) {
+  const editorConfig = {
+    namespace: "NoteEditor",
+    nodes: [ListNode, ListItemNode],
+    onError(error: Error) {
+      throw error;
+    },
+    theme: Theme,
+    editorState: initialValue || undefined,
+  };
+
   return (
     <>
       <LexicalComposer initialConfig={editorConfig}>
