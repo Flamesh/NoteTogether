@@ -56,9 +56,7 @@ export default function TabTwoScreen() {
               setEditorState={(state) => {
                 try {
                   if (state && typeof state === "string") {
-                    
                     const parsedState = JSON.parse(state);
-                    console.log("Parsed state:", parsedState);
                     setNoteContent(parsedState.root as INoteContent);
                   }
                 } catch (error) {

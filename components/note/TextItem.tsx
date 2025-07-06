@@ -7,222 +7,138 @@ import {
 import React from "react";
 import { Text, View } from "react-native";
 
-const test = {
-  children: [
-    {
-      children: [
-        {
-          detail: 0,
-          format: 0,
-          mode: "normal",
-          style: "",
-          text: "2",
-          type: "text",
-          version: 1,
-        },
-      ],
-      direction: null,
-      format: "",
-      indent: 0,
-      type: "listitem",
-      version: 1,
-      value: 1,
-    },
-    {
-      children: [
-        {
-          children: [
-            {
-              children: [
-                {
-                  children: [
-                    {
-                      children: [
-                        {
-                          children: [
-                            {
-                              children: [
-                                {
-                                  detail: 0,
-                                  format: 0,
-                                  mode: "normal",
-                                  style: "",
-                                  text: "3.1",
-                                  type: "text",
-                                  version: 1,
-                                },
-                              ],
-                              direction: null,
-                              format: "",
-                              indent: 3,
-                              type: "listitem",
-                              version: 1,
-                              value: 1,
-                            },
-                            {
-                              children: [
-                                {
-                                  detail: 0,
-                                  format: 0,
-                                  mode: "normal",
-                                  style: "",
-                                  text: "3.1",
-                                  type: "text",
-                                  version: 1,
-                                },
-                              ],
-                              direction: null,
-                              format: "",
-                              indent: 3,
-                              type: "listitem",
-                              version: 1,
-                              value: 2,
-                            },
-                            {
-                              children: [
-                                {
-                                  detail: 0,
-                                  format: 0,
-                                  mode: "normal",
-                                  style: "",
-                                  text: "3.3",
-                                  type: "text",
-                                  version: 1,
-                                },
-                              ],
-                              direction: null,
-                              format: "",
-                              indent: 3,
-                              type: "listitem",
-                              version: 1,
-                              value: 3,
-                            },
-                          ],
-                          direction: null,
-                          format: "",
-                          indent: 0,
-                          type: "list",
-                          version: 1,
-                          listType: "number",
-                          start: 1,
-                          tag: "ol",
-                        },
-                      ],
-                      direction: null,
-                      format: "",
-                      indent: 2,
-                      type: "listitem",
-                      version: 1,
-                      value: 1,
-                    },
-                  ],
-                  direction: null,
-                  format: "",
-                  indent: 0,
-                  type: "list",
-                  version: 1,
-                  listType: "number",
-                  start: 1,
-                  tag: "ol",
-                },
-              ],
-              direction: null,
-              format: "",
-              indent: 1,
-              type: "listitem",
-              version: 1,
-              value: 1,
-            },
-          ],
-          direction: null,
-          format: "",
-          indent: 0,
-          type: "list",
-          version: 1,
-          listType: "number",
-          start: 1,
-          tag: "ol",
-        },
-      ],
-      direction: null,
-      format: "",
-      indent: 0,
-      type: "listitem",
-      version: 1,
-      value: 2,
-    },
-  ],
-  direction: null,
-  format: "",
-  indent: 0,
-  type: "list",
-  version: 1,
-  listType: "number",
-  start: 1,
-  tag: "ol",
-};
+interface TextItemProps extends INoteContent {
+  depth?: number;
+  fatherType?: string;
+}
 
-const TextItem = (props: INoteContent) => {
-  const { format, children, type } = props;
+const TextItem = (props: TextItemProps) => {
+  const { format, children, type, text, listType, value, depth = 0 } = props;
 
-  console.log("TextItem rendered:", type);
+  // Handle text nodes
+  if (type === "text") {
+    const textFormat = fromStateToFormat(Number(format));
+    return (
+      <Text
+        style={{
+          fontWeight: textFormat.IS_BOLD ? "bold" : "normal",
+          fontStyle: textFormat.IS_ITALIC ? "italic" : "normal",
+          textDecorationLine: textDecorationLineStyle(
+            textFormat.IS_STRIKETHROUGH,
+            textFormat.IS_UNDERLINE
+          ),
+          color: textFormat.IS_HIGHLIGHT ? "#FFFF00" : "#000000",
+        }}
+      >
+        {text}
+      </Text>
+    );
+  }
 
-  // if (listType) {
-  //   return (
-  //     <View>
-  //       {children.map((child, index) => {
-  //         const { text, format } = child;
-  //         const textFormat = fromStateToFormat(Number(format));
-  //         return (
-  //           <View key={index}>
-  //             <Text>1.</Text>
-  //              <TextItem key={index} {...child} />
-  //            </View>
-  //         );
-  //       })}
-  //     </View>
-  //   )
-  // }
+  // Handle list nodes
+  if (type === "list") {
+    return (
+      <View style={{ marginLeft: depth * 10 }}>
+        {children?.map((child, index) => (
+          <TextItem
+            key={index}
+            {...child}
+            depth={depth}
+            fatherType={listType}
+          />
+        )) || null}
+      </View>
+    );
+  }
+
+  // Handle list item nodes
   if (type === "listitem") {
-    console.log("TextItem rendered: listItem", JSON.stringify(props));
+    const isNoText = props.children.every((child) => !child.text);
+
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "flex-start",
+          marginLeft: depth * 5,
+          marginVertical: 1,
+          paddingVertical: 2,
+        }}
+      >
+        {!isNoText && (
+          <View
+            style={{
+              minWidth: 25,
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              marginRight: 5,
+              paddingTop: 1,
+            }}
+          >
+            {getListMarker(props.fatherType, value || 1)}
+          </View>
+        )}
+        <View style={{ flex: 1, minHeight: 20 }}>
+          {children?.map((child, index) => (
+            <TextItem key={index} {...child} depth={depth + 1} />
+          )) || null}
+        </View>
+      </View>
+    );
+  }
+
+  // Handle paragraph nodes
+  if (type === "paragraph") {
     return (
       <View
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          justifyContent: textAlignStyle(format.toString()),
+          justifyContent: textAlignStyle(format?.toString() || ""),
+          marginVertical: 4,
         }}
       >
-        {children.map((child, index) => {
-          const { text, format } = child;
-          const textFormat = fromStateToFormat(Number(format));
-          return (
-            <Text
-              key={index}
-              style={{
-                fontWeight: textFormat.IS_BOLD ? "bold" : "normal",
-                fontStyle: textFormat.IS_ITALIC ? "italic" : "normal",
-                textDecorationLine: textDecorationLineStyle(
-                  textFormat.IS_STRIKETHROUGH,
-                  textFormat.IS_UNDERLINE
-                ),
-                color: textFormat.IS_HIGHLIGHT ? "#FFFF00" : "#000000",
-              }}
-            >
-              {text}
-            </Text>
-          );
-        })}
+        {children?.map((child, index) => (
+          <TextItem key={index} {...child} depth={depth} />
+        )) || null}
       </View>
     );
   }
 
-  if (type === "list") {
-    return children.map((child, index) => { 
+  // Default case - render children if they exist
+  if (children && children.length > 0) {
+    return (
+      <View>
+        {children.map((child, index) => (
+          <TextItem key={index} {...child} depth={depth} />
+        ))}
+      </View>
+    );
+  }
+
+  return null;
+};
+
+const getListMarker = (listType: string | undefined, value: number) => {
+  switch (listType) {
+    case "number":
       return (
-        <TextItem key={index} {...child} />
-      )
-    })
+        <Text style={{ fontSize: 14, fontWeight: "500", color: "#333" }}>
+          {value}.
+        </Text>
+      );
+    case "bullet":
+      return (
+        <Text style={{ fontSize: 14, fontWeight: "bold", color: "#666" }}>
+          •
+        </Text>
+      );
+    default:
+      return (
+        <Text style={{ fontSize: 14, fontWeight: "bold", color: "#666" }}>
+          •
+        </Text>
+      );
   }
 };
 

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   addIconContainer: {
     position: "absolute",
     bottom: 20,
-    right: 0,
+    right: 10,
     elevation: 5, // For Android shadow
     shadowColor: "#000", // For iOS shadow
     shadowOffset: { width: 0, height: 2 },

@@ -26,7 +26,6 @@ export function NoteItem({ note }: NoteItemProps) {
   const handleDeleteNote = () => {
     dispatch(deleteNote(note.id));
   };
-  // console.log("NoteItem rendered:", JSON.stringify(note));
   return (
     <View style={style.container}>
       <View>
