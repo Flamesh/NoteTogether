@@ -90,7 +90,7 @@ export function DraggableNoteItem({
   const cardStyle = useAnimatedStyle(() => {
     const isBeingDragged = isDragging && draggedIndex === index;
     return {
-      backgroundColor: isBeingDragged ? "#f0f0f0" : "#fff",
+      backgroundColor: isBeingDragged ? "#a1a1a1" : "#fff",
     };
   });
 
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 0,
     paddingVertical: 5,
-    
   },
   card: {
     flexDirection: "row",

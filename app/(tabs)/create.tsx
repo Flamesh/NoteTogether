@@ -35,10 +35,9 @@ export default function TabTwoScreen() {
     
     dispatch(addNote(newNote));
     
-    // Reset all state and force editor to re-mount
-    setTitle("");
-    setNoteContent(undefined);
-    setEditorKey(prev => prev + 1); // This will force the editor to re-mount
+    // setTitle("");
+    // setNoteContent(undefined);
+    // setEditorKey(prev => prev + 1);
     
     navigation.goBack();
   };

@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 10,
-    elevation: 5, // For Android shadow
-    shadowColor: "#000", // For iOS shadow
+    elevation: 5, 
+    shadowColor: "#000", 
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,

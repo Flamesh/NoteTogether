@@ -15,7 +15,6 @@ interface TextItemProps extends INoteContent {
 const TextItem = (props: TextItemProps) => {
   const { format, children, type, text, listType, value, depth = 0 } = props;
 
-  // Handle text nodes
   if (type === "text") {
     const textFormat = fromStateToFormat(Number(format));
     return (
@@ -35,7 +34,6 @@ const TextItem = (props: TextItemProps) => {
     );
   }
 
-  // Handle list nodes
   if (type === "list") {
     return (
       <View style={{ marginLeft: depth * 10 }}>
@@ -51,7 +49,6 @@ const TextItem = (props: TextItemProps) => {
     );
   }
 
-  // Handle list item nodes
   if (type === "listitem") {
     const isNoText = props.children.every((child) => !child.text);
 
@@ -87,7 +84,6 @@ const TextItem = (props: TextItemProps) => {
     );
   }
 
-  // Handle paragraph nodes
   if (type === "paragraph") {
     return (
       <View
@@ -105,7 +101,6 @@ const TextItem = (props: TextItemProps) => {
     );
   }
 
-  // Default case - render children if they exist
   if (children && children.length > 0) {
     return (
       <View>
